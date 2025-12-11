@@ -11,7 +11,7 @@ export default function PaymentSuccess() {
     const { user } = useAuth();
     const { refreshUsage } = useUsage();
     const [loading, setLoading] = useState(true);
-    const [error, setError] = useState('');
+    const [_error, setError] = useState('');
 
     useEffect(() => {
         const activateProStatus = async () => {

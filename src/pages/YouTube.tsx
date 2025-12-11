@@ -33,7 +33,7 @@ export default function YouTube() {
             return;
         }
 
-        setLoading(true);
+        setIsLoading(true);
         setError('');
         setTranscript('');
 
@@ -80,7 +80,7 @@ export default function YouTube() {
         } catch (err) {
             setError('Failed to fetch transcript. Please try again.');
         } finally {
-            setLoading(false);
+            setIsLoading(false);
         }
     };
 
@@ -122,16 +122,16 @@ export default function YouTube() {
                                     placeholder="https://www.youtube.com/watch?v=..."
                                     value={videoUrl}
                                     onChange={(e) => setVideoUrl(e.target.value)}
-                                    disabled={loading}
+                                    disabled={isLoading}
                                 />
                             </div>
 
                             <button
                                 type="submit"
                                 className="btn btn-primary btn-full"
-                                disabled={loading}
+                                disabled={isLoading}
                             >
-                                {loading ? (
+                                {isLoading ? (
                                     <>
                                         <span className="spinner"></span>
                                         Extracting transcript...
