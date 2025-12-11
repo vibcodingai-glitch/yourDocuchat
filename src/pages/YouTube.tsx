@@ -88,42 +88,17 @@ export default function YouTube() {
         }
     };
 
-    // Function to extract YouTube video ID
-    const getYouTubeVideoId = (url: string): string | null => {
-        const patterns = [
-            /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
-            /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
-        ];
-
-        for (const pattern of patterns) {
-            const match = url.match(pattern);
-            if (match) return match[1];
-        }
-        return null;
-    };
-
     // Function to save transcript to history
     const saveToHistory = async (url: string, transcriptText: string) => {
         if (!user) return;
 
         try {
-            const videoId = getYouTubeVideoId(url);
-
-            // Try to extract title from page (we'll use a placeholder for now)
-            const videoTitle = `YouTube Video ${videoId || 'Unknown'}`;
-            const thumbnailUrl = videoId
-                ? `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`
-                : '';
-
             const { error } = await supabase
                 .from('transcripts')
                 .insert({
                     user_id: user.id,
-                    video_url: url,
-                    video_title: videoTitle,
-                    video_id: videoId,
-                    thumbnail_url: thumbnailUrl,
-                    transcript_text: transcriptText,
+                    videos_url: url,  // Note: plural "videos_url"
+                    transcript: transcriptText,  // Note: "transcript" not "transcript_text"
                 });
 
             if (error) {

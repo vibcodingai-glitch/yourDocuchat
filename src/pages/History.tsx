@@ -6,9 +6,9 @@ import './History.css';
 
 interface Transcript {
     id: string;
-    video_title: string;
-    video_url: string;
-    thumbnail_url: string;
+    user_id: string;
+    videos_url: string;  // Note: plural "videos_url" in your table
+    transcript: string;
     created_at: string;
 }
 
@@ -31,17 +31,13 @@ export default function History() {
                 .eq('user_id', user.id)
                 .order('created_at', { ascending: false });
 
-            if (error) throw error;
+            if (error) {
+                console.error('Supabase error:', error);
+                throw error;
+            }
 
-            // If thumbnail_url is missing, generate it from video_url
-            const processedData = (data || []).map(item => ({
-                ...item,
-                thumbnail_url: item.thumbnail_url || item.thumbnail || item.image || getYouTubeThumbnail(item.video_url || item.url || item.link),
-                video_title: item.video_title || item.title || item.name || item.video_name || '',
-                video_url: item.video_url || item.url || item.link || ''
-            }));
-
-            setTranscripts(processedData);
+            console.log('✅ Fetched transcripts:', data?.length || 0);
+            setTranscripts(data || []);
         } catch (error) {
             console.error('Error fetching transcripts:', error);
         } finally {
@@ -51,11 +47,27 @@ export default function History() {
 
     const getYouTubeThumbnail = (url: string) => {
         if (!url) return '';
-        const videoId = url.split('v=')[1]?.split('&')[0];
-        if (videoId) {
-            return `https://img.youtube.com/vi/${videoId}/maxresdefault.jpg`;
+
+        // Extract video ID from various YouTube URL formats
+        const patterns = [
+            /(?:youtube\.com\/watch\?v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/,
+            /youtube\.com\/embed\/([a-zA-Z0-9_-]{11})/,
+        ];
+
+        for (const pattern of patterns) {
+            const match = url.match(pattern);
+            if (match && match[1]) {
+                return `https://img.youtube.com/vi/${match[1]}/maxresdefault.jpg`;
+            }
         }
+
         return '';
+    };
+
+    const getVideoTitle = (url: string) => {
+        // Extract video ID for title
+        const match = url.match(/(?:v=|youtu\.be\/)([a-zA-Z0-9_-]{11})/);
+        return match ? `YouTube Video ${match[1]}` : 'YouTube Video';
     };
 
     return (
@@ -82,9 +94,9 @@ export default function History() {
                             {transcripts.map((item) => (
                                 <div key={item.id} className="transcript-card">
                                     <div className="card-thumbnail">
-                                        <img src={item.thumbnail_url} alt={item.video_title} />
+                                        <img src={getYouTubeThumbnail(item.videos_url)} alt={getVideoTitle(item.videos_url)} />
                                         <div className="thumbnail-overlay">
-                                            <a href={item.video_url} target="_blank" rel="noopener noreferrer" className="watch-btn">
+                                            <a href={item.videos_url} target="_blank" rel="noopener noreferrer" className="watch-btn">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                                     <polyline points="15 3 21 3 21 9"></polyline>
@@ -95,7 +107,7 @@ export default function History() {
                                         </div>
                                     </div>
                                     <div className="card-content">
-                                        {item.video_title && <h3 className="card-title">{item.video_title}</h3>}
+                                        <h3 className="card-title">{getVideoTitle(item.videos_url)}</h3>
                                         <div className="card-meta">
                                             <span>Video</span>
                                             <span>•</span>
