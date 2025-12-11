@@ -1,0 +1,125 @@
+.youtube-page {
+    min-height: 100vh;
+    background: var(--color-bg);
+}
+
+.youtube-main {
+    min-height: calc(100vh - 72px);
+    padding: var(--spacing-2xl) 0;
+}
+
+.youtube-container {
+    max-width: 900px;
+    margin: 0 auto;
+    padding: 0 var(--spacing-lg);
+}
+
+.youtube-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.youtube-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.youtube-title {
+    background: linear-gradient(135deg, var(--color-primary-light), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-sm);
+}
+
+.youtube-subtitle {
+    font-size: 0.9375rem;
+}
+
+.youtube-card {
+    padding: var(--spacing-2xl);
+}
+
+.youtube-form {
+    margin-bottom: var(--spacing-xl);
+}
+
+.transcript-section {
+    margin-top: var(--spacing-2xl);
+    padding-top: var(--spacing-xl);
+    border-top: 1px solid var(--color-border);
+}
+
+.transcript-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: var(--spacing-lg);
+}
+
+.transcript-header h3 {
+    margin: 0;
+    color: var(--color-text);
+}
+
+.transcript-content {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-xl);
+    max-height: 500px;
+    overflow-y: auto;
+    line-height: 1.8;
+}
+
+.transcript-content p {
+    margin-bottom: var(--spacing-lg);
+    color: var(--color-text);
+}
+
+.transcript-content p:last-child {
+    margin-bottom: 0;
+}
+
+/* Custom scrollbar for transcript */
+.transcript-content::-webkit-scrollbar {
+    width: 8px;
+}
+
+.transcript-content::-webkit-scrollbar-track {
+    background: var(--color-bg-input);
+    border-radius: var(--radius-md);
+}
+
+.transcript-content::-webkit-scrollbar-thumb {
+    background: var(--color-border);
+    border-radius: var(--radius-md);
+}
+
+.transcript-content::-webkit-scrollbar-thumb:hover {
+    background: var(--color-border-hover);
+}
+
+@media (max-width: 768px) {
+    .youtube-container {
+        padding: 0 var(--spacing-md);
+    }
+
+    .youtube-card {
+        padding: var(--spacing-lg);
+    }
+
+    .youtube-main {
+        padding: var(--spacing-xl) 0;
+    }
+
+    .transcript-header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: var(--spacing-md);
+    }
+
+    .transcript-content {
+        padding: var(--spacing-md);
+    }
+}

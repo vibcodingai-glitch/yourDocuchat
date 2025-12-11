@@ -1,0 +1,132 @@
+.upload-page {
+    min-height: 100vh;
+    background: var(--color-bg);
+}
+
+.upload-main {
+    min-height: calc(100vh - 72px);
+    padding: var(--spacing-2xl) 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.upload-container {
+    max-width: 600px;
+    width: 100%;
+    padding: 0 var(--spacing-lg);
+}
+
+.upload-card {
+    width: 100%;
+}
+
+.upload-header {
+    text-align: center;
+    margin-bottom: var(--spacing-2xl);
+}
+
+.upload-icon {
+    font-size: 3rem;
+    margin-bottom: var(--spacing-md);
+}
+
+.upload-title {
+    background: linear-gradient(135deg, var(--color-primary-light), var(--color-accent));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: var(--spacing-sm);
+}
+
+.upload-subtitle {
+    font-size: 0.9375rem;
+}
+
+.file-input-wrapper {
+    margin-bottom: var(--spacing-lg);
+}
+
+.file-input-hidden {
+    display: none;
+}
+
+.file-input-label {
+    display: block;
+    cursor: pointer;
+    border: 2px dashed var(--color-border);
+    border-radius: var(--radius-lg);
+    padding: var(--spacing-2xl);
+    text-align: center;
+    transition: all var(--transition-base);
+    background: var(--color-bg-input);
+}
+
+.file-input-label:hover {
+    border-color: var(--color-primary);
+    background: var(--color-bg-elevated);
+}
+
+.file-input-content {
+    pointer-events: none;
+}
+
+.upload-icon-large {
+    font-size: 4rem;
+    margin-bottom: var(--spacing-md);
+    opacity: 0.6;
+}
+
+.file-input-text {
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-text);
+    margin-bottom: var(--spacing-xs);
+}
+
+.file-input-hint {
+    font-size: 0.875rem;
+    margin: 0;
+}
+
+.file-info {
+    background: var(--color-bg-elevated);
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    padding: var(--spacing-lg);
+    margin-bottom: var(--spacing-lg);
+}
+
+.file-details p {
+    margin-bottom: var(--spacing-sm);
+    font-size: 0.9375rem;
+}
+
+.file-details p:last-child {
+    margin-bottom: 0;
+}
+
+.progress-section {
+    margin-bottom: var(--spacing-lg);
+}
+
+.progress-text {
+    text-align: center;
+    margin-top: var(--spacing-sm);
+    font-size: 0.875rem;
+    margin-bottom: 0;
+}
+
+@media (max-width: 640px) {
+    .upload-container {
+        padding: 0 var(--spacing-md);
+    }
+
+    .file-input-label {
+        padding: var(--spacing-xl);
+    }
+
+    .upload-icon-large {
+        font-size: 3rem;
+    }
+}
