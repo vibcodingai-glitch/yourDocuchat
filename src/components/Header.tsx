@@ -18,10 +18,46 @@ const Header = memo(function Header() {
     };
 
     const navItems = [
-        { path: '/dashboard', label: 'Chat', icon: '💬' },
-        { path: '/youtube', label: 'Transcripts', icon: '📝' },
-        { path: '/upload', label: 'Upload', icon: '📤' },
-        { path: '/history', label: 'History', icon: '🕒' },
+        {
+            path: '/dashboard',
+            label: 'Chat',
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z"></path>
+                </svg>
+            )
+        },
+        {
+            path: '/youtube',
+            label: 'Transcripts',
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.33 29 29 0 0 0-.46-5.25z"></path>
+                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                </svg>
+            )
+        },
+        {
+            path: '/upload',
+            label: 'Upload',
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                    <polyline points="17 8 12 3 7 8"></polyline>
+                    <line x1="12" y1="3" x2="12" y2="15"></line>
+                </svg>
+            )
+        },
+        {
+            path: '/history',
+            label: 'History',
+            icon: (
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <polyline points="12 6 12 12 16 14"></polyline>
+                </svg>
+            )
+        },
     ];
 
     return (
@@ -109,6 +145,19 @@ const Header = memo(function Header() {
                     </nav>
                 </div>
             </div>
+            {/* Bottom Navigation for Mobile */}
+            <nav className="bottom-nav">
+                {navItems.map((item) => (
+                    <Link
+                        key={item.path}
+                        to={item.path}
+                        className={`bottom-nav-item ${location.pathname === item.path ? 'active' : ''}`}
+                    >
+                        <span className="bottom-nav-icon">{item.icon}</span>
+                        <span className="bottom-nav-label">{item.label}</span>
+                    </Link>
+                ))}
+            </nav>
         </header>
     );
 });

@@ -79,7 +79,7 @@ export default function Upload() {
                 });
             }, 200);
 
-            const response = await fetch('https://n8ninstance.afrochainn8n.cfd/webhook/upload', {
+            const response = await fetch(import.meta.env.VITE_N8N_UPLOAD_WEBHOOK, {
                 method: 'POST',
                 body: formData,
             });

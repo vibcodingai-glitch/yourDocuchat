@@ -7,7 +7,7 @@ import './History.css';
 interface Transcript {
     id: string;
     user_id: string;
-    videos_url: string;  // Note: plural "videos_url" in your table
+    video_url: string;
     transcript: string;
     created_at: string;
 }
@@ -94,9 +94,9 @@ export default function History() {
                             {transcripts.map((item) => (
                                 <div key={item.id} className="transcript-card">
                                     <div className="card-thumbnail">
-                                        <img src={getYouTubeThumbnail(item.videos_url)} alt={getVideoTitle(item.videos_url)} />
+                                        <img src={getYouTubeThumbnail(item.video_url)} alt={getVideoTitle(item.video_url)} />
                                         <div className="thumbnail-overlay">
-                                            <a href={item.videos_url} target="_blank" rel="noopener noreferrer" className="watch-btn">
+                                            <a href={item.video_url} target="_blank" rel="noopener noreferrer" className="watch-btn">
                                                 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                                                     <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"></path>
                                                     <polyline points="15 3 21 3 21 9"></polyline>
@@ -107,11 +107,24 @@ export default function History() {
                                         </div>
                                     </div>
                                     <div className="card-content">
-                                        <h3 className="card-title">{getVideoTitle(item.videos_url)}</h3>
-                                        <div className="card-meta">
-                                            <span>Video</span>
-                                            <span>•</span>
-                                            <span>{new Date(item.created_at).toLocaleDateString()}</span>
+                                        <h3 className="card-title">{getVideoTitle(item.video_url)}</h3>
+                                        <p className="card-excerpt">
+                                            {item.transcript ? (
+                                                <>
+                                                    {item.transcript.substring(0, 150)}
+                                                    {item.transcript.length > 150 && '...'}
+                                                </>
+                                            ) : (
+                                                <span className="text-italic text-muted">No transcript preview available</span>
+                                            )}
+                                        </p>
+                                        <div className="card-footer">
+                                            <a href={item.video_url} target="_blank" rel="noopener noreferrer" className="card-link">
+                                                {item.video_url}
+                                            </a>
+                                            <div className="card-meta">
+                                                <span className="card-date">{new Date(item.created_at).toLocaleDateString()}</span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>

@@ -39,7 +39,7 @@ export default function YouTube() {
         setTranscript('');
 
         try {
-            const response = await fetch('https://n8ninstance.afrochainn8n.cfd/webhook/Fetch', {
+            await fetch(import.meta.env.VITE_N8N_YOUTUBE_WEBHOOK, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -50,36 +50,34 @@ export default function YouTube() {
                 }),
             });
 
-            const data = await response.json();
+            // We don't rely on the response from the webhook as it might be unstable
+            // Instead, we wait a moment and then fetch the latest transcript from our database
+            // which the webhook should have populated.
 
-            if (Array.isArray(data)) {
-                // Filter out the first few items that contain IDs/URLs
-                // and extract actual transcript content
-                const transcriptParts = data
-                    .filter((item) => {
-                        const content = item.pageContent || '';
-                        // Skip items that look like UUIDs, user IDs, or URLs
-                        return (
-                            content.trim().length > 0 && // Not empty
-                            !content.match(/^[a-f0-9-]{36}$/i) && // Not a UUID
-                            !content.startsWith('http') && // Not a URL
-                            !content.match(/^[a-zA-Z0-9-]+$/) // Not just alphanumeric (IDs)
-                        );
-                    })
-                    .map((item) => item.pageContent)
-                    .join('\n\n');
+            // Wait 2 seconds for DB propagation
+            await new Promise(resolve => setTimeout(resolve, 2000));
 
-                if (transcriptParts) {
-                    setTranscript(transcriptParts);
-                    await incrementTranscript();
+            // Fetch the latest transcript for this video and user
+            const { data: dbData, error: dbError } = await supabase
+                .from('transcripts')
+                .select('transcript')
+                .eq('user_id', user.id)
+                .eq('video_url', videoUrl)
+                .order('created_at', { ascending: false })
+                .limit(1)
+                .single();
 
-                    // Save to history table
-                    await saveToHistory(videoUrl, transcriptParts);
-                } else {
-                    setError('No transcript found for this video');
-                }
+            if (dbError) {
+                console.error('Error fetching from DB:', dbError);
+                throw new Error('Could not retrieve transcript from database');
+            }
+
+            if (dbData && dbData.transcript) {
+                setTranscript(dbData.transcript);
+                await incrementTranscript();
+                // We do NOT save to history here because the N8N webhook already did it
             } else {
-                throw new Error('Invalid response format');
+                setError('No transcript found for this video. Please try again.');
             }
         } catch (err) {
             setError('Failed to fetch transcript. Please try again.');
@@ -88,28 +86,7 @@ export default function YouTube() {
         }
     };
 
-    // Function to save transcript to history
-    const saveToHistory = async (url: string, transcriptText: string) => {
-        if (!user) return;
 
-        try {
-            const { error } = await supabase
-                .from('transcripts')
-                .insert({
-                    user_id: user.id,
-                    videos_url: url,  // Note: plural "videos_url"
-                    transcript: transcriptText,  // Note: "transcript" not "transcript_text"
-                });
-
-            if (error) {
-                console.error('Error saving transcript to history:', error);
-            } else {
-                console.log('✅ Transcript saved to history');
-            }
-        } catch (error) {
-            console.error('Error saving to history:', error);
-        }
-    };
 
     const handleCopy = () => {
         navigator.clipboard.writeText(transcript);
