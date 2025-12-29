@@ -15,7 +15,7 @@ const app = express();
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || '');
 
 // Initialize Supabase with environment variables
-const supabaseUrl = process.env.SUPABASE_URL || '';
+const supabaseUrl = process.env.SUPABASE_URL || process.env.VITE_SUPABASE_URL || '';
 const supabaseServiceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || '';
 const supabase = createClient(supabaseUrl, supabaseServiceKey);
 
