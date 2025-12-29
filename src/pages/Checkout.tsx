@@ -20,8 +20,13 @@ export default function Checkout() {
         setError('');
 
         try {
-            // Create a checkout session via local backend
-            const response = await fetch('http://localhost:3001/api/create-checkout', {
+            // Determine API URL based on environment
+            // In production (Vercel), we use relative path
+            // In development, we use the local server port
+            const API_URL = import.meta.env.PROD ? '' : 'http://localhost:3001';
+
+            // Create a checkout session via backend
+            const response = await fetch(`${API_URL}/api/create-checkout`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
